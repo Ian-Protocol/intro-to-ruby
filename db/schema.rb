@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_24_040740) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_24_042012) do
   create_table "card_types", force: :cascade do |t|
     t.string "card_type"
     t.datetime "created_at", null: false
@@ -25,6 +25,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_24_040740) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "cards_colors", force: :cascade do |t|
+    t.integer "card_id", null: false
+    t.integer "color_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_cards_colors_on_card_id"
+    t.index ["color_id"], name: "index_cards_colors_on_color_id"
+  end
+
   create_table "colors", force: :cascade do |t|
     t.string "color"
     t.datetime "created_at", null: false
@@ -36,4 +45,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_24_040740) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "cards_colors", "cards"
+  add_foreign_key "cards_colors", "colors"
 end
