@@ -19,19 +19,18 @@ end
 
 # Seed the cards
 
-# OS agnostic :)
-cards_file_path = Rails.root.join("db", "data", "AtomicCards.json")
+# OS agnostic
+cards_file = Rails.root.join("db", "data", "AtomicCards.json")
 
-unless cards_file_path.exist?
+unless cards_file.exist?
   puts "Did you forget to download the AtomicCards JSON?"
   puts "Put it in /db/data/ please!"
   exit
 end
 
-file = File.read(cards_file_path)
-data = JSON.parse(file)
+cards_json = JSON.parse(File.read(cards_file))
 
-cards_data = data["data"]
+cards_data = cards_json["data"]
 card_count = 0
 
 # How AtomicCards is set up:
@@ -49,4 +48,20 @@ cards_data.each do |card_name, card_info|
 
   # TEMPORARY! Stop after 100 until tested.
   break if card_count >= 100
+end
+
+# Seed the keywords
+keywords_file = Rails.root.join("db", "data", "Keywords.json")
+
+unless keywords_file.exist?
+  puts "Did you forget to download the Keywords JSON?"
+  puts "Put it in /db/data/ please!"
+  exit
+end
+
+keywords_json = JSON.parse(File.read(keywords_file))
+keywords_data = keywords_json["data"]["keywordAbilities"]
+
+keyword_abilities.each do |keyword_name|
+  Keyword.find_or_create_by!(keyword: keyword_name)
 end
