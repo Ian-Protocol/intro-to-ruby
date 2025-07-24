@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_24_040438) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_24_040740) do
+  create_table "card_types", force: :cascade do |t|
+    t.string "card_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "cards", force: :cascade do |t|
     t.string "card_name"
     t.string "mana_cost"
