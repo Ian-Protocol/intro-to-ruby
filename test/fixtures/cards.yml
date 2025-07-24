@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  card_name: MyString
+  mana_cost: MyString
+  description: MyText
+
+two:
+  card_name: MyString
+  mana_cost: MyString
+  description: MyText
