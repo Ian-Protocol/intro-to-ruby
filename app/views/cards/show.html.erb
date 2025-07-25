@@ -1,2 +1,19 @@
-<h1>Cards#show</h1>
-<p>Find me in app/views/cards/show.html.erb</p>
+<h1><%= @card.card_name %></h1>
+
+<p><strong>Mana Cost:</strong> <%= @card.mana_cost %></p>
+<p><strong>Card Text:</strong> <%= @card.text %></p>
+
+# https://www.rubyguides.com/2018/10/ruby-map-method/
+<% if @card.colors.any? %>
+  <p><strong>Colors:</strong> <%= @card.colors.map(&:color).join(", ") %></p>
+<% end %>
+
+<% if @card.keywords.any? %>
+  <p><strong>Keywords:</strong> <%= @card.keywords.map(&:keyword).join(", ") %></p>
+<% end %>
+
+<% if @card.card_types.any? %>
+  <p><strong>Card Types:</strong> <%= @card.card_types.map(&:card_type).join(", ") %></p>
+<% end %>
+
+<%= link_to "Back to All Cards", cards_path %>

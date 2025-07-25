@@ -17,4 +17,5 @@ Rails.application.routes.draw do
 
   root "cards#index"
   resources :cards, only: [:index, :show]
+  get "about", to: "pages#about", as: "about"
 end
