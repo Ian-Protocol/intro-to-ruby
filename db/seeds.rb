@@ -70,7 +70,7 @@ end
 
 cards_json = JSON.parse(File.read(cards_file))
 cards_data = cards_json["data"]
-funny_sets = %w[UGL UNH UST UNF UND PLIST PCEL AFR]
+funny_sets = %w[UGL UNH UST UNF UND PLIST PCEL AFR MB1 MB2]
 
 # count = 0
 
