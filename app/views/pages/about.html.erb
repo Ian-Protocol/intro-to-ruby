@@ -1,4 +1,14 @@
 <h1><u>About This Project</u></h1>
 <p>This is a Rails project that loads and displays Magic: The Gathering cards using data from MTGJSON.</p>
 <p>Data includes card names, mana cost, card text, card types, keywords, and color identity.</p>
-<p>Would you like to know more?</p>
+
+<h2>About the Data</h2>
+The data used in this project has been gathered from <a href="https://mtgjson.com/">MTGJSON</a>.
+<p>The cards are from this dataset: <a href="https://mtgjson.com/data-models/card/card-atomic/">Atomic Cards</a></p>
+<p>The keywords are from this dataset: <a href="https://mtgjson.com/data-models/keywords/">Keywords</a></p>
+<p>And the card types are from this dataset: <a href="https://mtgjson.com/data-models/card-types/">Types</a></p>
+Each of these datasets sports their own table, and a joiner table exists between each dataset and the Atomic Cards dataset.<br>
+
+This is because, in Magic: the Gathering, many cards can have many colors, abilities, and card types.
+So many-to-many relationships are a natural fit for this project.<br>
+You never know what you're going to find on a card. That's what keeps the game fun and exciting.

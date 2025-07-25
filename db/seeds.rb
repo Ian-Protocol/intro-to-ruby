@@ -72,8 +72,6 @@ cards_json = JSON.parse(File.read(cards_file))
 cards_data = cards_json["data"]
 funny_sets = %w[UGL UNH UST UNF UND PLIST PCEL AFR MB1 MB2]
 
-# count = 0
-
 # How AtomicCards is set up:
 # card_name is key of top-level hash, and card_info is the full hash of data for that card.
 cards_data.each do |card_name, card_info|
@@ -120,13 +118,6 @@ cards_data.each do |card_name, card_info|
       CardsCardType.find_or_create_by!(card: card, card_type: card_type)
     end
   end
-
-  # # Stop after x
-  # count += 1
-
-  # if count > 2
-  #   exit
-  # end
 end
 
 # Wake up from nap (seeding takes 20 mins)
