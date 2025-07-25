@@ -20,19 +20,6 @@ Keyword.destroy_all
 CardType.destroy_all
 Card.destroy_all
 
-# Reset PK sequences
-%w[
-  cards
-  colors
-  keywords
-  card_types
-  cards_colors
-  cards_keywords
-  cards_card_types
-].each do |table|
-  ActiveRecord::Base.connection.reset_pk_sequence!(table)
-end
-
 # Seed the colors
 colors = ["W", "U", "B", "R", "G", "C"]
 
@@ -52,7 +39,7 @@ end
 keywords_json = JSON.parse(File.read(keywords_file))
 keywords_data = keywords_json["data"]["keywordAbilities"]
 
-keyword_abilities.each do |keyword_name|
+keywords_data.each do |keyword_name|
   Keyword.find_or_create_by!(keyword: keyword_name)
 end
 
@@ -83,19 +70,27 @@ end
 
 cards_json = JSON.parse(File.read(cards_file))
 cards_data = cards_json["data"]
+funny_sets = %w[UGL UNH UST UNF UND PLIST PCEL AFR]
 
-count = 0
+# count = 0
 
 # How AtomicCards is set up:
 # card_name is key of top-level hash, and card_info is the full hash of data for that card.
 cards_data.each do |card_name, card_info|
   # Skip if already created.
-  next if Card.exists?(name: card_name)
+  next if Card.exists?(card_name: card_name)
+
+  # Some cards contain multiple printings, stored in an array.
+  card_info = card_info.first if card_info.is_a?(Array)
+
+  # Skip if the card is funny.
+  next if (Array(card_info["printings"]) & funny_sets).any?
+  next if card_info["isFunny"]
 
   card = Card.create!(
-    name: card_name,
-    mana_cost: card_info["manaCost"],
-    description: card_info["text"]
+    card_name: card_name,
+    mana_cost: card_info["manaCost"].to_s,
+    description: card_info["text"].to_s
   )
   
   # Join to Colors
@@ -127,10 +122,10 @@ cards_data.each do |card_name, card_info|
   end
 
 
-  # Stop after 100
-  count += 1
+  # # Stop after x
+  # count += 1
 
-  if count > 100
-    exit
-  end
+  # if count > 2
+  #   exit
+  # end
 end
