@@ -40,7 +40,7 @@ keywords_json = JSON.parse(File.read(keywords_file))
 keywords_data = keywords_json["data"]["keywordAbilities"]
 
 keywords_data.each do |keyword_name|
-  Keyword.find_or_create_by!(keyword: keyword_name)
+  Keyword.find_or_create_by!(keyword: keyword_name.downcase)
 end
 
 # Seed the card types
@@ -55,7 +55,7 @@ end
 cardtypes_json = JSON.parse(File.read(cardtypes_file))
 
 cardtypes_json["data"].keys.each do |card_type_name|
-  CardType.find_or_create_by!(card_type: card_type_name)
+  CardType.find_or_create_by!(card_type: card_type_name.downcase)
 end
 
 # Seed the cards
@@ -78,7 +78,7 @@ funny_sets = %w[UGL UNH UST UNF UND PLIST PCEL AFR]
 # card_name is key of top-level hash, and card_info is the full hash of data for that card.
 cards_data.each do |card_name, card_info|
   # Skip if already created.
-  next if Card.exists?(card_name: card_name)
+  next if Card.exists?(card_name: card_name.downcase)
 
   # Some cards contain multiple printings, stored in an array.
   card_info = card_info.first if card_info.is_a?(Array)
@@ -88,7 +88,7 @@ cards_data.each do |card_name, card_info|
   next if card_info["isFunny"]
 
   card = Card.create!(
-    card_name: card_name,
+    card_name: card_name.downcase,
     mana_cost: card_info["manaCost"].to_s,
     description: card_info["text"].to_s
   )
@@ -105,7 +105,7 @@ cards_data.each do |card_name, card_info|
 
   # Join to Keywords
   Array(card_info["keywords"]).each do |keyword_name|
-    keyword = Keyword.find_by(keyword: keyword_name)
+    keyword = Keyword.find_by(keyword: keyword_name.downcase)
 
     if keyword
       CardsKeyword.find_or_create_by!(card: card, keyword: keyword)
@@ -114,13 +114,12 @@ cards_data.each do |card_name, card_info|
 
   # Join to Types
   Array(card_info["types"]).each do |type_name|
-    card_type = CardType.find_by(card_type: type_name)
+    card_type = CardType.find_by(card_type: type_name.downcase)
 
     if card_type
       CardsCardType.find_or_create_by!(card: card, card_type: card_type)
     end
   end
-
 
   # # Stop after x
   # count += 1
@@ -129,3 +128,7 @@ cards_data.each do |card_name, card_info|
   #   exit
   # end
 end
+
+# Wake up from nap (seeding takes 20 mins)
+system('powershell.exe -c "(New-Object Media.SoundPlayer \\"C:\\\\Windows\\\\Media\\\\tada.wav\\").PlaySync();"')
+system('powershell.exe -c "Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak(\'Your Rails seed is done. Get up, nerd.\');"')
