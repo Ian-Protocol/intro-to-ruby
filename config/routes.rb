@@ -18,5 +18,8 @@ Rails.application.routes.draw do
 
   root "pages#home"
   resources :cards, only: [:index, :show]
+  resources :colors, only: [:index]
+  resources :keywords, only: [:index]
+  resources :card_types, only: [:index]
   get "about", to: "pages#about", as: "about"
 end

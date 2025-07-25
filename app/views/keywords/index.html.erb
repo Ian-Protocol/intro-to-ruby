@@ -1,0 +1,8 @@
+<h1>All Keywords</h1>
+<ul>
+  <% @keywords.each do |keyword| %>
+    <li><%= keyword.keyword.capitalize %></li>
+  <% end %>
+</ul>
+
+<%= link_to "Back to Card Browser", cards_path %>
